@@ -32,7 +32,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,LocationListener {
 
-    //changes on first branch
     Context mContext;
     GoogleMap mGoogleMap;
     private GoogleApiClient mGoogleApiClient;
