@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-    private void AllGuides(){
+    private void AllMechanics(){
         APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
         Call<List<Mechanic>> call=apiInterface.MechanicsNearBy(String.valueOf(mlatitude),String.valueOf(mlongitude));
         call.enqueue(new Callback<List<Mechanic>>() {
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mlongitude = (double) (location.getLongitude());
         if(!done){
             done=true;
-            AllGuides();
+            AllMechanics();
         }
 
     }
