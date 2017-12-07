@@ -3,7 +3,11 @@ package com.example.news.autodocs;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -13,6 +17,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,26 +36,38 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,LocationListener {
 
-    //this is first branch
     Context mContext;
     GoogleMap mGoogleMap;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
+    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+    ArrayList<LatLng> latlngs;
+    LatLng latLng;
     Location mLastLocation;
     Marker mCurrLocationMarker;
     double mlatitude,mlongitude;
+    Boolean done;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext=MainActivity.this;
+        done=false;
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -60,7 +82,51 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+    private void AllGuides(){
+        APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
+        Call<List<Mechanic>> call=apiInterface.MechanicsNearBy(String.valueOf(mlatitude),String.valueOf(mlongitude));
+        call.enqueue(new Callback<List<Mechanic>>() {
+            @Override
+            public void onResponse(Call<List<Mechanic>> call, Response<List<Mechanic>> response) {
+                List<Mechanic> c=response.body();
+                //Toast.makeText(mContext, "Server response: "+ c.get(0).response, Toast.LENGTH_LONG).show();
+                if(c.get(0).response.equalsIgnoreCase("success")) {
+                    latlngs = new ArrayList<>();
+                    for (final Mechanic item:c) {
+                        latLng = new LatLng(Double.parseDouble(item.lng),Double.parseDouble(item.lat));
+                        //google map markers
+                        MarkerOptions options = new MarkerOptions();
+                        //get all markers and locations
+                        builder.include(latLng);
+                        options.position(latLng);
+                        options.title(item.name);
+                        options.snippet(item.phone);
+                        mGoogleMap.addMarker(options);
 
+                    }
+                    // Set the camera to the greatest possible zoom level that includes the bounds
+                    mGoogleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                        @Override
+                        public void onMapLoaded() {
+                            //googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 30));
+                            LatLngBounds bounds = builder.build();
+                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+                        }
+                    });
+
+                    //  Toast.makeText(mContext, "Welcome "+c.get(0).name, Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(mContext, "Server response: "+c.get(0).response, Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Mechanic>> call, Throwable t) {
+                Toast.makeText(mContext, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    //google map location code bellow
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         mLocationRequest = new LocationRequest();
@@ -73,17 +139,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
     }
-
     @Override
     public void onConnectionSuspended(int i) {
 
     }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation = location;
@@ -104,8 +167,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mlatitude = (double) (location.getLatitude());
         mlongitude = (double) (location.getLongitude());
-    }
+        if(!done){
+            done=true;
+            AllGuides();
+        }
 
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
