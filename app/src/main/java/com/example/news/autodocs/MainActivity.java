@@ -163,13 +163,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
-        //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+
 
         mlatitude = (double) (location.getLatitude());
         mlongitude = (double) (location.getLongitude());
         if(!done){
             done=true;
+            //move map camera
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
             AllMechanics();
         }
 
