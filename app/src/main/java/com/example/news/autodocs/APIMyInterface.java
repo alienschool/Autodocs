@@ -34,6 +34,10 @@ public interface APIMyInterface {
     Call<UserWithRequest> CheckForRequest( @Field("mechanicId") String mechanicId);
 
     @FormUrlEncoded
+    @POST("accept-request.php")
+    Call<UserWithRequest> AcceptRequest( @Field("requestId") String requestId);
+
+    @FormUrlEncoded
     @POST("testing-service.php")
     Call<String> testingPhp(@Field("test") String test);
 }

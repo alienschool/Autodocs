@@ -14,6 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MechanicActivity extends AppCompatActivity {
 
     LocalService mService;
@@ -41,6 +45,28 @@ public class MechanicActivity extends AppCompatActivity {
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
         }
     };
+
+    public void AcceptRequest( final String requestId){
+        APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
+        //calling php file from here. php will return success
+        Call<UserWithRequest> call=apiInterface.AcceptRequest(requestId);
+        call.enqueue(new Callback<UserWithRequest>() {
+            @Override
+            public void onResponse(Call<UserWithRequest> call, Response<UserWithRequest> response) {
+                UserWithRequest c=response.body();
+                if(c.response.equalsIgnoreCase("success")){
+                    Toast.makeText(MechanicActivity.this, "accepted ", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(MechanicActivity.this,"Server response: "+c.response, Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserWithRequest> call, Throwable t) {
+                Toast.makeText(MechanicActivity.this, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     @Override
     protected void onStart() {
         super.onStart();
