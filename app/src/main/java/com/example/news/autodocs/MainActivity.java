@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mGoogleMap.setMyLocationEnabled(true);
                 mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
             } else {
-                //Request Location Permission
+                //UserWithRequest Location Permission
                 checkLocationPermission();
             }
         }

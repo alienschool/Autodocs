@@ -6,50 +6,8 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
-import java.util.Random;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import android.app.Service;
-import android.content.Intent;
-import android.os.Binder;
-import android.os.Handler;
-import android.os.IBinder;
-import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
-
-import java.util.Random;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import android.app.AlarmManager;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.app.TaskStackBuilder;
-import android.appwidget.AppWidgetManager;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Binder;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.SystemClock;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.NotificationCompat;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.example.news.autodocs.APIClient;
-import com.example.news.autodocs.APIMyInterface;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -107,17 +65,11 @@ public class LocalService extends Service {
     public void RequestMechanic(final String lat, final String lng, final String userId, final String mechanicId){
         APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
         //calling php file from here. php will return success
-        Call<Mechanic> call=apiInterface.RequestAMechanic(lat,lng,userId,mechanicId);
+        Call<Mechanic> call=apiInterface.RequestAMechanic(lat,lng,userId,mechanicId,"Flat Tyre");
         call.enqueue(new Callback<Mechanic>() {
             @Override
             public void onResponse(Call<Mechanic> call, Response<Mechanic> response) {
                 Mechanic c=response.body();
-                //Intent intent = new Intent("intentKey");
-                // You can also include some extra data.
-                //intent.putExtra("key", c.response);
-                //LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
-                //Toast.makeText(mContext, "Server response: "+c, Toast.LENGTH_LONG).show();
-                //Log.d("Serverresponse",c);
                 if(c.response.equalsIgnoreCase("wait")){
                     i++;
                     Intent intent = new Intent("intentKey");
@@ -129,7 +81,7 @@ public class LocalService extends Service {
                 else if(c.response.equalsIgnoreCase("success")){
                     Intent intent = new Intent("intentKey");
                     // You can also include some extra data.
-                    intent.putExtra("key", c.response+i);
+                    intent.putExtra("key", c.response);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
 
                     //Intent intent = new Intent("intentKey");
@@ -164,6 +116,11 @@ public class LocalService extends Service {
                             (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     // mId allows you to update the notification later on.
                     mNotificationManager.notify(101, mBuilder.build());*/
+                }else{
+                    Intent intent = new Intent("intentKey");
+                    // You can also include some extra data.
+                    intent.putExtra("key", c.response);
+                    LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
                 }
             }
             @Override
@@ -176,19 +133,13 @@ public class LocalService extends Service {
     public void CheckForRequest( final String mechanicId){
         APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
         //calling php file from here. php will return success
-        Call<Mechanic> call=apiInterface.CheckForRequest(mechanicId);
-        call.enqueue(new Callback<Mechanic>() {
+        Call<UserWithRequest> call=apiInterface.CheckForRequest(mechanicId);
+        call.enqueue(new Callback<UserWithRequest>() {
             @Override
-            public void onResponse(Call<Mechanic> call, Response<Mechanic> response) {
-                Mechanic c=response.body();
-                //Intent intent = new Intent("intentKey");
-                // You can also include some extra data.
-                //intent.putExtra("key", c.response);
-                //LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
-                //Toast.makeText(mContext, "Server response: "+c, Toast.LENGTH_LONG).show();
-                //Log.d("Serverresponse",c);
+            public void onResponse(Call<UserWithRequest> call, Response<UserWithRequest> response) {
+                UserWithRequest c=response.body();
                 if(c.response.equalsIgnoreCase("wait")){
-                    i++;
+                    j++;
                     Intent intent = new Intent("RequestToMechanic");
                     // You can also include some extra data.
                     intent.putExtra("key", c.response+j);
@@ -198,7 +149,8 @@ public class LocalService extends Service {
                 else if(c.response.equalsIgnoreCase("success")){
                     Intent intent = new Intent("RequestToMechanic");
                     // You can also include some extra data.
-                    intent.putExtra("key", c.response+j);
+                    intent.putExtra("key", c.response);
+                    intent.putExtra("UserWithRequest", (Serializable) c);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
                 }else {
                     Intent intent = new Intent("RequestToMechanic");
@@ -208,7 +160,7 @@ public class LocalService extends Service {
                 }
             }
             @Override
-            public void onFailure(Call<Mechanic> call, Throwable t) {
+            public void onFailure(Call<UserWithRequest> call, Throwable t) {
                 //Toast.makeText(mContext, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

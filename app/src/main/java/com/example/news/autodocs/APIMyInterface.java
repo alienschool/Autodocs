@@ -24,11 +24,14 @@ public interface APIMyInterface {
 
     @FormUrlEncoded
     @POST("request-a-mechanic.php")
-    Call<Mechanic> RequestAMechanic(@Field("lat") String lat, @Field("lng") String lng,@Field("userId") String userId, @Field("mechanicId") String mechanicId);
+    Call<Mechanic> RequestAMechanic(@Field("lat") String lat, @Field("lng") String lng,
+                                    @Field("userId") String userId,
+                                    @Field("mechanicId") String mechanicId,
+                                    @Field("helpType") String helpType);
 
     @FormUrlEncoded
     @POST("check-for-request.php")
-    Call<Mechanic> CheckForRequest( @Field("mechanicId") String mechanicId);
+    Call<UserWithRequest> CheckForRequest( @Field("mechanicId") String mechanicId);
 
     @FormUrlEncoded
     @POST("testing-service.php")
