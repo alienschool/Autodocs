@@ -21,4 +21,8 @@ public interface APIMyInterface {
     @FormUrlEncoded
     @POST("mechanics-nearby.php")
     Call<List<Mechanic>> MechanicsNearBy(@Field("lat") String lat, @Field("lng") String lng);
+
+    @FormUrlEncoded
+    @POST("testing-service.php")
+    Call<String> testingPhp(@Field("test") String test);
 }

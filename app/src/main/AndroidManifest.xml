@@ -28,6 +28,7 @@
         <activity android:name=".Signin" />
         <activity android:name=".PreSignin" />
         <activity android:name=".Signup"></activity>
+        <service android:name=".Service.LocalService"/>
     </application>
 
 </manifest>
