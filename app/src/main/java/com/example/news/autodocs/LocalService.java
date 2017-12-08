@@ -172,6 +172,75 @@ public class LocalService extends Service {
             }
         });
     }
+    private int j=0;
+    public void RequestMechanic( final String mechanicId){
+        APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
+        //calling php file from here. php will return success
+        Call<Mechanic> call=apiInterface.CheckForRequest(mechanicId);
+        call.enqueue(new Callback<Mechanic>() {
+            @Override
+            public void onResponse(Call<Mechanic> call, Response<Mechanic> response) {
+                Mechanic c=response.body();
+                //Intent intent = new Intent("intentKey");
+                // You can also include some extra data.
+                //intent.putExtra("key", c.response);
+                //LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
+                //Toast.makeText(mContext, "Server response: "+c, Toast.LENGTH_LONG).show();
+                //Log.d("Serverresponse",c);
+                if(c.response.equalsIgnoreCase("wait")){
+                    i++;
+                    Intent intent = new Intent("RequestToMechanic");
+                    // You can also include some extra data.
+                    intent.putExtra("key", c.response+j);
+                    LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
+                    RequestMechanic(mechanicId);
+                }
+                else if(c.response.equalsIgnoreCase("success")){
+                    Intent intent = new Intent("intentKey");
+                    // You can also include some extra data.
+                    intent.putExtra("key", c.response+j);
+                    LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
+
+                    //Intent intent = new Intent("intentKey");
+                    // You can also include some extra data.
+                    //intent.putExtra("key", c.response);
+                    //LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
+
+                    /*NotificationCompat.Builder mBuilder =
+                            (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                                    //.setSmallIcon(R.drawable.navigate_icon)
+                                    .setContentTitle("")
+                                    .setContentText("notificationmsg");
+                    // Creates an explicit intent for an Activity in your app
+                    Intent resultIntent = new Intent(this, MapActivity.class);
+
+                    // The stack builder object will contain an artificial back stack for the
+                    // started Activity.
+                    // This ensures that navigating backward from the Activity leads out of
+                    // your application to the Home screen.
+                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                    // Adds the back stack for the Intent (but not the Intent itself)
+                    stackBuilder.addParentStack(MapActivity.class);
+                    // Adds the Intent that starts the Activity to the top of the stack
+                    stackBuilder.addNextIntent(resultIntent);
+                    PendingIntent resultPendingIntent =
+                            stackBuilder.getPendingIntent(
+                                    0,
+                                    PendingIntent.FLAG_UPDATE_CURRENT
+                            );
+                    mBuilder.setContentIntent(resultPendingIntent);
+                    NotificationManager mNotificationManager =
+                            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    // mId allows you to update the notification later on.
+                    mNotificationManager.notify(101, mBuilder.build());*/
+                }
+            }
+            @Override
+            public void onFailure(Call<Mechanic> call, Throwable t) {
+                //Toast.makeText(mContext, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
 
 }

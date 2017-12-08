@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.news.autodocs">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -29,8 +29,11 @@
         </activity>
         <activity android:name=".Signin" />
         <activity android:name=".PreSignin" />
-        <activity android:name=".Signup"></activity>
-        <service android:name=".LocalService"/>
+        <activity android:name=".Signup" />
+
+        <service android:name=".LocalService" />
+
+        <activity android:name=".MechanicActivity"></activity>
     </application>
 
 </manifest>

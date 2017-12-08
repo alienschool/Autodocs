@@ -27,6 +27,10 @@ public interface APIMyInterface {
     Call<Mechanic> RequestAMechanic(@Field("lat") String lat, @Field("lng") String lng,@Field("userId") String userId, @Field("mechanicId") String mechanicId);
 
     @FormUrlEncoded
+    @POST("check-for-request.php")
+    Call<Mechanic> CheckForRequest( @Field("mechanicId") String mechanicId);
+
+    @FormUrlEncoded
     @POST("testing-service.php")
     Call<String> testingPhp(@Field("test") String test);
 }
