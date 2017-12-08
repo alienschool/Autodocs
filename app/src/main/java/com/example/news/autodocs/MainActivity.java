@@ -374,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Toast.makeText(MainActivity.this, "l ho gaya", Toast.LENGTH_SHORT).show();
         }
         String name= marker.getTitle();
-
+        Toast.makeText(MainActivity.this, marker.getTitle(), Toast.LENGTH_SHORT).show();
 
 
         if (name.equalsIgnoreCase("My Spot"))
