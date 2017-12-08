@@ -104,7 +104,7 @@ public class LocalService extends Service {
         }
     };*/
 
-    public void RequestMechanic(final String lat, final String lng, final String userId, final String mechanicId){
+    public void RequestMechanic(){
         APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
         //calling php file from here. php will return success
         Call<Mechanic> call=apiInterface.RequestAMechanic("45.56","70.34","1","1");

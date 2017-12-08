@@ -368,7 +368,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Call a method from the LocalService.
             // However, if this call were something that might hang, then this request should
             // occur in a separate thread to avoid slowing down the activity performance.
-            mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString());
+            mService.RequestMechanic();
+            //String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString()
             //Toast.makeText(MainActivity.this, "number: " + num, Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(MainActivity.this, "l ho gaya", Toast.LENGTH_SHORT).show();
