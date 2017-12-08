@@ -9,9 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
@@ -23,13 +20,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -55,7 +47,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,LocationListener {
+        GoogleApiClient.OnConnectionFailedListener,LocationListener,GoogleMap.OnMarkerClickListener {
 
     //this is a test change
     Context mContext;
@@ -103,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     // Call a method from the LocalService.
                     // However, if this call were something that might hang, then this request should
                     // occur in a separate thread to avoid slowing down the activity performance.
-                    mService.RequestMechanic();
+                    //mService.RequestMechanic(String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), 1, marker.getTag().toString());
                     //Toast.makeText(MainActivity.this, "number: " + num, Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(MainActivity.this, "l ho gaya", Toast.LENGTH_SHORT).show();
@@ -184,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         options.position(latLng);
                         options.title(item.name);
                         options.snippet(item.phone);
-                        mGoogleMap.addMarker(options);
+                        mGoogleMap.addMarker(options).setTag(item.id);
 
                     }
                     // Set the camera to the greatest possible zoom level that includes the bounds
@@ -199,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     //  Toast.makeText(mContext, "Welcome "+c.get(0).name, Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(mContext, "Server response: "+c.get(0).response, Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Server response: "+c.get(0).response, Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -368,5 +360,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //if (mGoogleApiClient != null) {
         //  LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         //}
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if (mBound) {
+            // Call a method from the LocalService.
+            // However, if this call were something that might hang, then this request should
+            // occur in a separate thread to avoid slowing down the activity performance.
+            mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString());
+            //Toast.makeText(MainActivity.this, "number: " + num, Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(MainActivity.this, "l ho gaya", Toast.LENGTH_SHORT).show();
+        }
+        String name= marker.getTitle();
+
+
+
+        if (name.equalsIgnoreCase("My Spot"))
+        {
+            //write your code here
+        }
+        return false;
     }
 }

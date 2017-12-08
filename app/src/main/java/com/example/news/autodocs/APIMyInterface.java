@@ -24,7 +24,7 @@ public interface APIMyInterface {
 
     @FormUrlEncoded
     @POST("request-a-mechanic.php")
-    Call<List<Mechanic>> RequestAMechanic(@Field("lat") String lat, @Field("lng") String lng,@Field("userId") String userId, @Field("mechanicId") String mechanicId);
+    Call<Mechanic> RequestAMechanic(@Field("lat") String lat, @Field("lng") String lng,@Field("userId") String userId, @Field("mechanicId") String mechanicId);
 
     @FormUrlEncoded
     @POST("testing-service.php")

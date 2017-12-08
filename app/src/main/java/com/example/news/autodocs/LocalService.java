@@ -81,7 +81,11 @@ public class LocalService extends Service {
         return mBinder;
     }
 
-    /** method for clients */
+    /** method for clients
+     * @param lat
+     * @param lng
+     * @param userId
+     * @param mechanicId*/
     /*public int getRandomNumber() {
         handler=new Handler().postDelayed(new Runnable() {
             @Override
@@ -99,21 +103,40 @@ public class LocalService extends Service {
 
         }
     };*/
-    public void RequestMechanic(){
+    private int i=0;
+    public void RequestMechanic(final String lat, final String lng, final String userId, final String mechanicId){
         APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
         //calling php file from here. php will return success
-        Call<String> call=apiInterface.testingPhp("test");
-        call.enqueue(new Callback<String>() {
+        Call<Mechanic> call=apiInterface.RequestAMechanic(lat,lng,userId,mechanicId);
+        call.enqueue(new Callback<Mechanic>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String c=response.body();
+            public void onResponse(Call<Mechanic> call, Response<Mechanic> response) {
+                Mechanic c=response.body();
+                //Intent intent = new Intent("intentKey");
+                // You can also include some extra data.
+                //intent.putExtra("key", c.response);
+                //LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
                 //Toast.makeText(mContext, "Server response: "+c, Toast.LENGTH_LONG).show();
-                Log.d("Serverresponse",c);
-                if(c.equalsIgnoreCase("success")){
+                //Log.d("Serverresponse",c);
+                if(c.response.equalsIgnoreCase("wait")){
+                    i++;
                     Intent intent = new Intent("intentKey");
                     // You can also include some extra data.
-                    intent.putExtra("key", c);
+                    intent.putExtra("key", c.response+i);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
+                    RequestMechanic(lat,lng,userId,mechanicId);
+                }
+                else if(c.response.equalsIgnoreCase("success")){
+                    Intent intent = new Intent("intentKey");
+                    // You can also include some extra data.
+                    intent.putExtra("key", c.response+i);
+                    LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
+
+                    //Intent intent = new Intent("intentKey");
+                    // You can also include some extra data.
+                    //intent.putExtra("key", c.response);
+                    //LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
+
                     /*NotificationCompat.Builder mBuilder =
                             (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                                     //.setSmallIcon(R.drawable.navigate_icon)
@@ -144,7 +167,7 @@ public class LocalService extends Service {
                 }
             }
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<Mechanic> call, Throwable t) {
                 //Toast.makeText(mContext, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
