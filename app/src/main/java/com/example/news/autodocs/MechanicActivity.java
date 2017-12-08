@@ -25,16 +25,6 @@ public class MechanicActivity extends AppCompatActivity {
         //service
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mRequestReceiver, new IntentFilter("RequestToMechanic"));
-        if (mBound) {
-            // Call a method from the LocalService.
-            // However, if this call were something that might hang, then this request should
-            // occur in a separate thread to avoid slowing down the activity performance.
-            //mService.RequestMechanic(String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), 1, marker.getTag().toString());
-            //Toast.makeText(MainActivity.this, "number: " + num, Toast.LENGTH_SHORT).show();
-            Toast.makeText(MechanicActivity.this, "service working", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(MechanicActivity.this, "error running service", Toast.LENGTH_SHORT).show();
-        }
     }
     private BroadcastReceiver mRequestReceiver = new BroadcastReceiver() {
         @Override
@@ -71,6 +61,8 @@ public class MechanicActivity extends AppCompatActivity {
             LocalService.LocalBinder binder = (LocalService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
+            mService.CheckForRequest("1");
+            Toast.makeText(MechanicActivity.this, "service working", Toast.LENGTH_SHORT).show();
         }
 
         @Override
