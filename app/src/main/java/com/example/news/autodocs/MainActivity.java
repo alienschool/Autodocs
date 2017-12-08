@@ -362,6 +362,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //}
     }
 
+
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (mBound) {
@@ -382,6 +383,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         {
             //write your code here
         }
-        return false;
+        return true;
     }
 }
