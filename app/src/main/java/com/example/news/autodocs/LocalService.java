@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 
 import java.io.Serializable;
@@ -150,7 +151,7 @@ public class LocalService extends Service {
                     Intent intent = new Intent("RequestToMechanic");
                     // You can also include some extra data.
                     intent.putExtra("key", c.response);
-                    intent.putExtra("UserWithRequest", (Serializable) c);
+                    intent.putExtra("name", c.name);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
                 }else {
                     Intent intent = new Intent("RequestToMechanic");

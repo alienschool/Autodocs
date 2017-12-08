@@ -31,6 +31,11 @@ public class MechanicActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
             String message = intent.getStringExtra("key");
+            if(message.equalsIgnoreCase("success")){
+                String name = intent.getStringExtra("name");
+                Toast.makeText(context, name, Toast.LENGTH_LONG).show();
+            }
+            //UserWithRequest userWithRequest= (UserWithRequest) intent.getSerializableExtra("UserWithRequest");
             //TextView tv=(TextView)findViewById(R.id.mytextview);
             //tv.setText(message);
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
@@ -62,7 +67,7 @@ public class MechanicActivity extends AppCompatActivity {
             mService = binder.getService();
             mBound = true;
             mService.CheckForRequest("1");
-            Toast.makeText(MechanicActivity.this, "service working", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MechanicActivity.this, "service working", Toast.LENGTH_SHORT).show();
         }
 
         @Override
