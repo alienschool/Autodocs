@@ -124,7 +124,7 @@ public class LocalService extends Service {
                     // You can also include some extra data.
                     intent.putExtra("key", c.response);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
-                    RequestMechanic("45.56","70.34","1","1");
+                    RequestMechanic();
                 }
                 else if(c.response.equalsIgnoreCase("success")){
                     Intent intent = new Intent("intentKey");
