@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/TintBlack">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/l1"
+    android:layout_marginTop="50dp"
+    android:orientation="vertical"
+    android:gravity="center">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Help Type"
+        android:textSize="24dp" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/radio1"
+        android:layout_marginTop="40dp">
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/carBreakdown"
+            android:text="BreakDown Services" />
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/carMaint"
+                android:text="Maintainace Services"/>
+    </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/l1"
+        android:orientation="horizontal"
+        android:id="@+id/l2"
+        android:layout_marginTop="20dp">
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Flat Tyre"
+        android:id="@+id/chck1"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Heat up"
+        android:id="@+id/chck2"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Battery Issue"
+        android:id="@+id/chck3"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="others"
+        android:id="@+id/chck4"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:layout_below="@+id/l2"
+        android:layout_alignParentStart="true">
+    <Button
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:text="Request"
+        android:id="@+id/request"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="20dp"
+    android:background="@drawable/button_shape"
+    android:textColor="#f9f9f9"
+    />
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:id="@+id/Back"
+        android:background="@drawable/button_shape"
+        android:textColor="#f9f9f9" />
+</LinearLayout>
+</RelativeLayout>
