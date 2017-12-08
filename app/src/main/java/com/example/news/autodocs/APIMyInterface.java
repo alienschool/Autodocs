@@ -23,6 +23,10 @@ public interface APIMyInterface {
     Call<List<Mechanic>> MechanicsNearBy(@Field("lat") String lat, @Field("lng") String lng);
 
     @FormUrlEncoded
+    @POST("request-a-mechanic.php")
+    Call<List<Mechanic>> RequestAMechanic(@Field("lat") String lat, @Field("lng") String lng,@Field("userId") String userId, @Field("mechanicId") String mechanicId);
+
+    @FormUrlEncoded
     @POST("testing-service.php")
     Call<String> testingPhp(@Field("test") String test);
 }
