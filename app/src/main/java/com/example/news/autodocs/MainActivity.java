@@ -236,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        markerOptions.draggable(true);
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
 
@@ -365,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public boolean onMarkerClick(final Marker marker) {
         Toast.makeText(MainActivity.this, "marker clicked", Toast.LENGTH_SHORT).show();
         if (mBound) {
             // Call a method from the LocalService.
