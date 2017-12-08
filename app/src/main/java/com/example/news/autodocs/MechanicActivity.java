@@ -24,7 +24,7 @@ public class MechanicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mechanic);
         //service
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter("RequestToMechanic"));
+                mRequestReceiver, new IntentFilter("RequestToMechanic"));
         if (mBound) {
             // Call a method from the LocalService.
             // However, if this call were something that might hang, then this request should
@@ -36,7 +36,7 @@ public class MechanicActivity extends AppCompatActivity {
             Toast.makeText(MechanicActivity.this, "error running service", Toast.LENGTH_SHORT).show();
         }
     }
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mRequestReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
