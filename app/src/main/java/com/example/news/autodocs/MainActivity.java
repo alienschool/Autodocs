@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
                         }
                     });
+                    mGoogleMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) mContext);
 
                     //  Toast.makeText(mContext, "Welcome "+c.get(0).name, Toast.LENGTH_LONG).show();
                 }else{
