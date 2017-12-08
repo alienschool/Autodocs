@@ -103,8 +103,8 @@ public class LocalService extends Service {
 
         }
     };*/
-
-    public void RequestMechanic(){
+    private int i=0;
+    public void RequestMechanic(final String lat, final String lng, final String userId, final String mechanicId){
         APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
         //calling php file from here. php will return success
         Call<Mechanic> call=apiInterface.RequestAMechanic("45.56","70.34","1","1");
@@ -119,17 +119,17 @@ public class LocalService extends Service {
                 //Toast.makeText(mContext, "Server response: "+c, Toast.LENGTH_LONG).show();
                 //Log.d("Serverresponse",c);
                 if(c.response.equalsIgnoreCase("wait")){
-                    //i++;
+                    i++;
                     Intent intent = new Intent("intentKey");
                     // You can also include some extra data.
-                    intent.putExtra("key", c.response);
+                    intent.putExtra("key", c.response+i);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
-                    RequestMechanic();
+                    RequestMechanic(lat,lng,userId,mechanicId);
                 }
                 else if(c.response.equalsIgnoreCase("success")){
                     Intent intent = new Intent("intentKey");
                     // You can also include some extra data.
-                    intent.putExtra("key", c.response);
+                    intent.putExtra("key", c.response+i);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
 
                     //Intent intent = new Intent("intentKey");
