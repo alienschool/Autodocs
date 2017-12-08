@@ -173,7 +173,7 @@ public class LocalService extends Service {
         });
     }
     private int j=0;
-    public void RequestMechanic( final String mechanicId){
+    public void CheckForRequest( final String mechanicId){
         APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
         //calling php file from here. php will return success
         Call<Mechanic> call=apiInterface.CheckForRequest(mechanicId);
@@ -193,7 +193,7 @@ public class LocalService extends Service {
                     // You can also include some extra data.
                     intent.putExtra("key", c.response+j);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
-                    RequestMechanic(mechanicId);
+                    CheckForRequest(mechanicId);
                 }
                 else if(c.response.equalsIgnoreCase("success")){
                     Intent intent = new Intent("intentKey");

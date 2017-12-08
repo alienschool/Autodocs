@@ -31,6 +31,7 @@ public class MechanicActivity extends AppCompatActivity {
             // occur in a separate thread to avoid slowing down the activity performance.
             //mService.RequestMechanic(String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), 1, marker.getTag().toString());
             //Toast.makeText(MainActivity.this, "number: " + num, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MechanicActivity.this, "service working", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(MechanicActivity.this, "error running service", Toast.LENGTH_SHORT).show();
         }
