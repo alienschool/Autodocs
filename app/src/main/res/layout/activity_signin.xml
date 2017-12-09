@@ -44,6 +44,22 @@
                 android:ems="10"
                 android:hint="Password"
                 android:inputType="textPassword" />
+            <RadioGroup
+                android:id="@+id/login_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            <RadioButton
+                android:id="@+id/login_radioButtonUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I'm User" />
+
+            <RadioButton
+                android:id="@+id/login_radioButtonMechanic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I'm Mechanic" />
+            </RadioGroup>
 
             <Button
                 android:id="@+id/loginPage_login_button"

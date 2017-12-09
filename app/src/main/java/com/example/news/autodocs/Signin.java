@@ -103,7 +103,6 @@ public class Signin extends AppCompatActivity {
                     User u=response.body();
                     if(u.response.equalsIgnoreCase("success")) {
                         Toast.makeText(mContext,"Welcome " +u.name, Toast.LENGTH_SHORT).show();
-
                         // Session Manager
                         session = new SessionManager(getApplicationContext());
                         session.createLoginSession(u.id, u.email, user.password);
