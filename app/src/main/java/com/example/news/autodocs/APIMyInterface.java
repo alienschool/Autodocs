@@ -14,12 +14,12 @@ public interface APIMyInterface {
 
     @FormUrlEncoded
     @POST("signup.php")
-    Call<User> SignUpMechanic(@Field("name") String name,@Field("phone") String phone,@Field("address") String address,
+    Call<User> SignUpUser(@Field("name") String name,@Field("phone") String phone,@Field("address") String address,
                      @Field("billingAddress") String billingAddress,@Field("membership") String membership,
                      @Field("email") String email, @Field("password") String password);
     @FormUrlEncoded
     @POST("signup.php")
-    Call<User> SignUpUser(@Field("name") String name,@Field("phone") String phone,
+    Call<User> SignUpMechanic(@Field("name") String name,@Field("phone") String phone,
                           @Field("lat") String lat,@Field("lng") String lng,
                           @Field("email") String email, @Field("password") String password);
 

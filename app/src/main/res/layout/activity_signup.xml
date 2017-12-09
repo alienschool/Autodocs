@@ -26,6 +26,25 @@
             android:text="Sign Up"
             android:textSize="36dp" />
     </LinearLayout>
+        <RadioGroup
+            android:id="@+id/signup_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            <RadioButton
+                android:id="@+id/signup_radioButtonUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="user"
+                android:text="I'm User" />
+
+            <RadioButton
+                android:id="@+id/signup_radioButtonMechanic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="mechanic"
+                android:text="I'm Mechanic" />
+        </RadioGroup>
+
         <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
