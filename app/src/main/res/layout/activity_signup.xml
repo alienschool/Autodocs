@@ -31,25 +31,31 @@
         android:layout_height="wrap_content"
         android:hint="Name"
         android:id="@+id/name"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="10dp"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
         android:id="@+id/email"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="10dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contact"
+            android:id="@+id/Cntctnumber"
+            android:layout_marginTop="10dp"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
         android:id="@+id/password"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="10dp"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Address"
         android:id="@+id/Address"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="10dp"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,7 +68,7 @@
             android:gravity="center">
         <Button
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Submit"
             android:id="@+id/sbmt"
             android:background="@drawable/button_shape"
