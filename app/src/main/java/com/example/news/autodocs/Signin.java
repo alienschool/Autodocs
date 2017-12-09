@@ -2,12 +2,15 @@ package com.example.news.autodocs;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,10 +24,13 @@ public class Signin extends AppCompatActivity {
     SessionManager session;
     String SessionId,SessionEmail,SessionPassword;
 
+    private RadioGroup mRadioGroup;
+    private RadioButton radioButton;
     EditText mEmailInput,mPasswordInput;
     Button mSignInButton;
     Context mContext;
     User user;
+    String userType="";
     Mechanic mechanic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,22 @@ public class Signin extends AppCompatActivity {
         mEmailInput = (EditText) findViewById(R.id.login_email_editText);
         mPasswordInput = (EditText) findViewById(R.id.login_password_editText);
 
+        mRadioGroup = (RadioGroup) findViewById(R.id.login_radio);
+         userType= "user";
+
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+
+                if (i == R.id.login_radioButtonUser) {
+                    radioButton = (RadioButton) findViewById(R.id.login_radioButtonUser);
+                } else if (i == R.id.login_radioButtonMechanic) {
+                    radioButton = (RadioButton) findViewById(R.id.login_radioButtonMechanic);
+                }
+                userType=radioButton.getTag().toString();
+                Toast.makeText(mContext,radioButton.getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
         TextView mRegisterLink = (TextView) findViewById(R.id.loginPage_register_textView);
         mRegisterLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +117,7 @@ public class Signin extends AppCompatActivity {
 
             // perform the user login attempt.
             APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
-            Call<User> call=apiInterface.SignIn(user.email,user.password,"user");
+            Call<User> call=apiInterface.SignIn(user.email,user.password,userType);
             call.enqueue(new Callback<User>() {
 
                 @Override
@@ -123,9 +145,16 @@ public class Signin extends AppCompatActivity {
         }
     }
     private void NextActivity(){
-        Intent intent = new Intent(mContext,MainActivity.class);
-        mContext.startActivity(intent);
-        finish();
+        if(userType.equalsIgnoreCase("user")){
+            Intent intent = new Intent(mContext,MainActivity.class);
+            mContext.startActivity(intent);
+            finish();
+        }else{
+            Intent intent = new Intent(mContext,MechanicActivity.class);
+            mContext.startActivity(intent);
+            finish();
+        }
+
     }
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic

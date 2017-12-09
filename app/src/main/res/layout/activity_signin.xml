@@ -52,12 +52,14 @@
                 android:id="@+id/login_radioButtonUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:tag="user"
                 android:text="I'm User" />
 
             <RadioButton
                 android:id="@+id/login_radioButtonMechanic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:tag="mechanic"
                 android:text="I'm Mechanic" />
             </RadioGroup>
 
