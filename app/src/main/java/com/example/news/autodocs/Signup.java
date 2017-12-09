@@ -54,44 +54,90 @@ public class Signup extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!(name.getText().toString().equals("")||Password.getText().toString().equals("")||Emai.getText().toString().equals("")
-                        ||BilingAdddress.getText().toString().equals("")||Address.getText().toString().equals("")))
-                {
-                    APIMyInterface apiMyInterface=APIClient.getApiClient().create(APIMyInterface.class);
-                    Call<User> call=apiMyInterface.SignUpUser(name.getText().toString(),contact.getText().toString(),
-                            Address.getText().toString(),BilingAdddress.getText().toString(),"monthly",Emai.getText().toString(),
-                            Password.getText().toString());
-                    call.enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            String res = response.body().response;
-                            if (res.equalsIgnoreCase("success")) {
-                                Intent intnt=new Intent(Signup.this,Signin.class);
-                                startActivity(intnt);
-                                finish();
-                            }
-                            else if(res.equalsIgnoreCase("already registered")){
-                                Emai.setError("Email already registered");
-                            }
-                            else if(res.equalsIgnoreCase("fail")){
-                                Toast.makeText(mContext, "fail", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                if(userType.equalsIgnoreCase("user")){
 
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-                            Toast.makeText(mContext, "Exception: "+t.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    //userType is user
+                    if(!(name.getText().toString().equals("")||Password.getText().toString().equals("")||Emai.getText().toString().equals("")
+                            ||BilingAdddress.getText().toString().equals("")||Address.getText().toString().equals("")))
+                    {
+                        APIMyInterface apiMyInterface=APIClient.getApiClient().create(APIMyInterface.class);
+                        Call<User> call=apiMyInterface.SignUpUser(name.getText().toString(),contact.getText().toString(),
+                                Address.getText().toString(),BilingAdddress.getText().toString(),"monthly",Emai.getText().toString(),
+                                Password.getText().toString());
+                        call.enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response) {
+                                String res = response.body().response;
+                                if (res.equalsIgnoreCase("success")) {
+                                    Intent intnt=new Intent(Signup.this,Signin.class);
+                                    startActivity(intnt);
+                                    finish();
+                                }
+                                else if(res.equalsIgnoreCase("already registered")){
+                                    Emai.setError("Email already registered");
+                                }
+                                else if(res.equalsIgnoreCase("fail")){
+                                    Toast.makeText(mContext, "fail", Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+                                Toast.makeText(mContext, "Exception: "+t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                    else {
+                        Toast.makeText(mContext, "Complete all the field first", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+
+                    //userType is mechanic
+                    if(!(name.getText().toString().equals("")||Password.getText().toString().equals("")||Emai.getText().toString().equals("")
+                            ||BilingAdddress.getText().toString().equals("")||Address.getText().toString().equals("")))
+                    {
+                        APIMyInterface apiMyInterface=APIClient.getApiClient().create(APIMyInterface.class);
+                        Call<User> call=apiMyInterface.SignUpMechanic(name.getText().toString(),contact.getText().toString(),
+                                "lat","lng",
+                                Emai.getText().toString(),Password.getText().toString());
+                        call.enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response) {
+                                String res = response.body().response;
+                                if (res.equalsIgnoreCase("success")) {
+                                    Intent intnt=new Intent(Signup.this,Signin.class);
+                                    startActivity(intnt);
+                                    finish();
+                                }
+                                else if(res.equalsIgnoreCase("already registered")){
+                                    Emai.setError("Email already registered");
+                                }
+                                else if(res.equalsIgnoreCase("fail")){
+                                    Toast.makeText(mContext, "fail", Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    Toast.makeText(mContext, res, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+                                Toast.makeText(mContext, "Exception: "+t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                    else {
+                        Toast.makeText(mContext, "Complete all the field first", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-                    Toast.makeText(mContext, "Complete all the field first", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
 
