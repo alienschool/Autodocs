@@ -30,7 +30,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/login_username_editText"
+                android:id="@+id/login_email_editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -46,21 +46,21 @@
                 android:inputType="textPassword" />
 
             <Button
-                android:id="@+id/login_login_button"
+                android:id="@+id/loginPage_login_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#f9f9f9"
                 android:background="@drawable/button_shape"
-                android:text="Login" />
+                android:text="Login"
+                android:textColor="#f9f9f9" />
 
             <TextView
-                android:id="@+id/login_register_textView"
-                android:layout_marginTop="10dp"
+                android:id="@+id/loginPage_register_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Create Account"
                 android:textAlignment="viewEnd"
-                android:textColor="@color/colorPrimary"
-                android:text="Create Account" />
+                android:textColor="@color/colorPrimary" />
 
 
         </LinearLayout>

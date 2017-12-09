@@ -1,12 +1,10 @@
 package com.example.news.autodocs;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,84 +16,124 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Signin extends AppCompatActivity {
-Button signin;
-    EditText usernaem,Password;
-    TextView signup;
-    SharedPreferences ss;
-    SharedPreferences.Editor editor;
+
+    // Session Manager Class
+    SessionManager session;
+    String SessionId,SessionEmail,SessionPassword;
+
+    EditText mEmailInput,mPasswordInput;
+    Button mSignInButton;
+    Context mContext;
+    User user;
+    Mechanic mechanic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-        ss=getSharedPreferences("LoginData", Context.MODE_PRIVATE);
-        editor=ss.edit();
-        signin=(Button)findViewById(R.id.login_login_button);
-        usernaem=(EditText) findViewById(R.id.login_username_editText);
-        signup=(TextView) findViewById(R.id.login_register_textView);
-        Password=(EditText)findViewById(R.id.login_password_editText);
-        signin.setOnClickListener(new View.OnClickListener() {
+        mContext=Signin.this;
+        mEmailInput = (EditText) findViewById(R.id.login_email_editText);
+        mPasswordInput = (EditText) findViewById(R.id.login_password_editText);
+
+        TextView mRegisterLink = (TextView) findViewById(R.id.loginPage_register_textView);
+        mRegisterLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!(usernaem.getText().toString().equals("")||Password.getText().toString().equals("")))
-                {
-                    APIMyInterface apiMyInterface=APIClient.getApiClient().create(APIMyInterface.class);
-                    Call<User>call=apiMyInterface.Login(usernaem.getText().toString(),Password.getText().toString());
-                    call.enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            String res = response.body().response;
-                            if (res .equals("Sucess")) {
-                                AlertDialog alertDialog = new AlertDialog.Builder(Signin.this).create();
-                                alertDialog.setTitle("Log in");
-                                alertDialog.setMessage("Remember this Account? ");
-                                alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Yes",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                editor.putString("Login", "User");
-                                                editor.commit();
-                                                dialog.dismiss();
-                                                Intent intent = new Intent(Signin.this, MainActivity.class);
-                                                startActivity(intent);
+                Intent intent = new Intent(mContext,Signup.class);
+                mContext.startActivity(intent);
+            }
+        });
+        mSignInButton = (Button) findViewById(R.id.loginPage_login_button);
+        mSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
 
+            }
+        });
+    }
+    /**
+     * Attempts to sign in the account specified by the login form.
+     * If there are form errors (invalid email, missing fields, etc.), the
+     * errors are presented and no actual login attempt is made.
+     */
+    private void attemptLogin() {
+        String email,password;
+        // Reset errors.
+        mEmailInput.setError(null);
+        mPasswordInput.setError(null);
+        user=new User();
+        user.email = mEmailInput.getText().toString();
+        user.password = mPasswordInput.getText().toString();
 
-                                            }
-                                        });
-                                alertDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "No",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                                Intent intent = new Intent(Signin.this, MainActivity.class);
-                                                startActivity(intent);
+        boolean cancel = false;
+        View focusView = null;
 
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(user.password) && !isPasswordValid(user.password)) {
+            mPasswordInput.setError("error_invalid_password");
+            focusView = mPasswordInput;
+            cancel = true;
+        }
 
-                                            }
+        // Check for a valid username.
+        if (TextUtils.isEmpty(user.email)) {
+            mEmailInput.setError("error_field_required");
+            focusView = mEmailInput;
+            cancel = true;
+        } else if (!isEmailValid(user.email)) {
+            mEmailInput.setError("error_invalid_email");
+            focusView = mEmailInput;
+            cancel = true;
+        }
 
-                                        });
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            //ProgressBar progressBar=(ProgressBar)findViewById(R.id.login_progressBar);
 
-                                alertDialog.show();
-                            }
-                            else
-                            {
-                                Toast.makeText(Signin.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+            // perform the user login attempt.
+            APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
+            Call<User> call=apiInterface.SignIn(user.email,user.password,"user");
+            call.enqueue(new Callback<User>() {
 
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    User u=response.body();
+                    if(u.response.equalsIgnoreCase("success")) {
+                        Toast.makeText(mContext,"Welcome " +u.name, Toast.LENGTH_SHORT).show();
 
-                        }
-                    });
+                        // Session Manager
+                        session = new SessionManager(getApplicationContext());
+                        session.createLoginSession(u.id, u.email, user.password);
+                        NextActivity();
+                    }else if(u.response.equalsIgnoreCase("unregistered")){
+                        mEmailInput.setError("Not registered");
+                    }else if(u.response.equalsIgnoreCase("wrong password")){
+                        mPasswordInput.setError("Wrong password");
+                    }else{
+                        Toast.makeText(mContext, "Server response: "+u.response, Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(Signin.this,Signup.class);
-                startActivity(intent);
-            }
-        });
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Toast.makeText(mContext, "Fail"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+    private void NextActivity(){
+        Intent intent = new Intent(mContext,MainActivity.class);
+        mContext.startActivity(intent);
+        finish();
+    }
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+        return email.contains("@");
+    }
+    private boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
+        return password.length() > 2;
     }
 }
