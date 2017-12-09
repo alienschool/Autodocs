@@ -40,6 +40,7 @@
         android:layout_below="@+id/l1"
         android:orientation="horizontal"
         android:id="@+id/l2"
+        android:gravity="center"
         android:layout_marginTop="20dp">
     <CheckBox
         android:layout_width="wrap_content"
@@ -51,6 +52,14 @@
         android:layout_height="wrap_content"
         android:text="Heat up"
         android:id="@+id/chck2"/>
+        </LinearLayout>l
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/l2"
+        android:orientation="horizontal"
+        android:id="@+id/l3"
+        android:gravity="center">
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,14 +71,16 @@
         android:text="others"
         android:id="@+id/chck4"/>
     </LinearLayout>
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
     android:layout_height="wrap_content"
-        android:layout_below="@+id/l2"
+        android:layout_below="@+id/l3"
+        android:gravity="center"
         android:layout_alignParentStart="true">
     <Button
-    android:layout_width="150dp"
+    android:layout_width="100dp"
     android:layout_height="wrap_content"
     android:text="Request"
         android:id="@+id/request"
@@ -77,13 +88,7 @@
         android:layout_marginLeft="20dp"
     android:background="@drawable/button_shape"
     android:textColor="#f9f9f9"
-    />
-    <Button
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:id="@+id/Back"
-        android:background="@drawable/button_shape"
-        android:textColor="#f9f9f9" />
-</LinearLayout>
+        />
+
+</RelativeLayout>
 </RelativeLayout>

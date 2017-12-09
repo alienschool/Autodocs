@@ -1,6 +1,7 @@
 package com.example.news.autodocs;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,8 +10,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,9 +23,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialogShow();
                 if (mBound) {
                     // Call a method from the LocalService.
                     // However, if this call were something that might hang, then this request should
@@ -132,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     /** Called when a button is clicked (the button in the layout file attaches to
      * this method with the android:onClick attribute) */
     public void onButtonClick(View v) {
+
         if (mBound) {
             // Call a method from the LocalService.
             // However, if this call were something that might hang, then this request should
@@ -374,7 +381,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             // However, if this call were something that might hang, then this request should
             // occur in a separate thread to avoid slowing down the activity performance.
             //Toast.makeText(MainActivity.this, "bound", Toast.LENGTH_SHORT).show();
-            mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString());
+    //        dialogShow(marker);
+            //mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString());
             //String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString()
             //Toast.makeText(MainActivity.this, "number: " + num, Toast.LENGTH_SHORT).show();
         }else{
@@ -389,5 +397,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             //write your code here
         //}
         return true;
+    }
+
+    //final Marker marker
+    private void dialogShow() {
+        final Dialog mydialog=new Dialog(this);
+
+        mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        mydialog.setTitle("Help Session");
+
+        mydialog.setContentView(R.layout.dialog);
+        RadioButton BreakDown = (RadioButton)mydialog. findViewById(R.id.carBreakdown);
+        RadioButton CarMain = (RadioButton)mydialog.findViewById(R.id.carMaint);
+        RadioGroup rg = (RadioGroup)mydialog.findViewById(R.id.radio1);
+        RadioButton selectedButton = (RadioButton) findViewById(rg.getCheckedRadioButtonId());
+        Button request=(Button)mydialog.findViewById(R.id.request);
+       // Button Back=(Button)mydialog.findViewById(R.id.Back);
+        request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              //  mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString());
+            }
+        });
+        mydialog.show();
     }
 }
