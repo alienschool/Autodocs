@@ -20,11 +20,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBHmBKnGAvfRe2DHX5GhbvfnrhNuYtiaI0" />
 
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".Signin" />
-        <activity android:name=".PreSignin" >
+        <activity android:name=".PreSignin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +33,8 @@
 
         <service android:name=".LocalService" />
 
-        <activity android:name=".MechanicActivity"></activity>
+        <activity android:name=".MechanicActivity" />
+        <activity android:name=".MapActivity"></activity>
     </application>
 
 </manifest>
