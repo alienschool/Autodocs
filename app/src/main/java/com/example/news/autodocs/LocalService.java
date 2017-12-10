@@ -152,6 +152,10 @@ public class LocalService extends Service {
                     // You can also include some extra data.
                     intent.putExtra("key", c.response);
                     intent.putExtra("name", c.name);
+                    intent.putExtra("userLat", c.userLat);
+                    intent.putExtra("userLng", c.userLng);
+                    intent.putExtra("helpType", c.helpType);
+                    intent.putExtra("id", c.id);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
                 }else {
                     Intent intent = new Intent("RequestToMechanic");

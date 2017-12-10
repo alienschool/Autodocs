@@ -26,7 +26,7 @@ public class MechanicActivity extends AppCompatActivity {
 
     LocalService mService;
     boolean mBound = false;
-    String name;
+    UserWithRequest userWithRequest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +41,11 @@ public class MechanicActivity extends AppCompatActivity {
             // Get extra data included in the Intent
             String message = intent.getStringExtra("key");
             if(message.equalsIgnoreCase("success")){
-                name = intent.getStringExtra("name");
+                userWithRequest.name = intent.getStringExtra("name");
+                userWithRequest.userLat = intent.getStringExtra("userLat");
+                userWithRequest.userLng = intent.getStringExtra("userLng");
+                userWithRequest.helpType = intent.getStringExtra("helpType");
+                userWithRequest.id = intent.getStringExtra("id");
                // Toast.makeText(context, name, Toast.LENGTH_LONG).show();
                 dialogShow();
             }
@@ -57,13 +61,13 @@ public class MechanicActivity extends AppCompatActivity {
         mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         mydialog.setContentView(R.layout.mechanic_dialog);
         TextView tt=(TextView)mydialog.findViewById(R.id.Name);
-        tt.setText(name);
+        tt.setText(userWithRequest.name);
         Button accept=(Button)mydialog.findViewById(R.id.yes);
          Button reject=(Button)mydialog.findViewById(R.id.no);
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AcceptRequest(userWithRequest.id);
             }
         });
         reject.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +88,11 @@ public class MechanicActivity extends AppCompatActivity {
                 UserWithRequest c=response.body();
                 if(c.response.equalsIgnoreCase("success")){
                     Toast.makeText(MechanicActivity.this, "accepted ", Toast.LENGTH_LONG).show();
+                    Intent i=new Intent(MechanicActivity.this,MapActivity.class);
+                    i.putExtra("lat",userWithRequest.userLat);
+                    i.putExtra("lng",userWithRequest.userLng);
+                    startActivity(i);
+                    finish();
                 }
                 else {
                     Toast.makeText(MechanicActivity.this,"Server response: "+c.response, Toast.LENGTH_LONG).show();
