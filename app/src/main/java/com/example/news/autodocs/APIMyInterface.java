@@ -41,6 +41,9 @@ public interface APIMyInterface {
     @FormUrlEncoded
     @POST("accept-request.php")
     Call<UserWithRequest> AcceptRequest( @Field("requestId") String requestId);
+    @FormUrlEncoded
+    @POST("reject-request.php")
+    Call<UserWithRequest> RejectRequest( @Field("requestId") String requestId);
 
     @FormUrlEncoded
     @POST("testing-service.php")

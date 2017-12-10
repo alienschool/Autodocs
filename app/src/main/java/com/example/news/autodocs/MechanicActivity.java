@@ -95,7 +95,7 @@ Context mContext;
     private void Notification()
     {
 
-        Intent intent= new Intent(MechanicActivity.this, MainActivity.class);
+        Intent intent= new Intent(MechanicActivity.this, MechanicActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -135,6 +135,8 @@ Context mContext;
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mydialog.dismiss();
+                RejectRequest(userWithRequest.id);
 
             }
         });
@@ -155,6 +157,28 @@ Context mContext;
                     i.putExtra("lng",userWithRequest.userLng);
                     startActivity(i);
                     finish();
+                }
+                else {
+                    Toast.makeText(MechanicActivity.this,"Server response: "+c.response, Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserWithRequest> call, Throwable t) {
+                Toast.makeText(MechanicActivity.this, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    public void RejectRequest( final String requestId){
+        APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
+        //calling php file from here. php will return success
+        Call<UserWithRequest> call=apiInterface.RejectRequest(requestId);
+        call.enqueue(new Callback<UserWithRequest>() {
+            @Override
+            public void onResponse(Call<UserWithRequest> call, Response<UserWithRequest> response) {
+                UserWithRequest c=response.body();
+                if(c.response.equalsIgnoreCase("success")){
+                    Toast.makeText(MechanicActivity.this, "rejected ", Toast.LENGTH_LONG).show();
+                    mService.CheckForRequest(SessionId);
                 }
                 else {
                     Toast.makeText(MechanicActivity.this,"Server response: "+c.response, Toast.LENGTH_LONG).show();
