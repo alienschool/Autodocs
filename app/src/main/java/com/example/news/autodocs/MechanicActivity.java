@@ -74,11 +74,15 @@ public class MechanicActivity extends AppCompatActivity {
                 userWithRequest.id = intent.getExtras().get("id").toString();
                // Toast.makeText(context, name, Toast.LENGTH_LONG).show();
                 dialogShow();
+            }else if(message.equalsIgnoreCase("wait")){
+                Toast.makeText(context, "Searching for customer requests in the background.", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             }
             //UserWithRequest userWithRequest= (UserWithRequest) intent.getSerializableExtra("UserWithRequest");
             //TextView tv=(TextView)findViewById(R.id.mytextview);
             //tv.setText(message);
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+
         }
     };
     private void dialogShow() {
