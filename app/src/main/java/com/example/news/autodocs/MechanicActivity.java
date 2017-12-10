@@ -122,8 +122,10 @@ Context mContext;
 
         mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         mydialog.setContentView(R.layout.mechanic_dialog);
-        TextView tt=(TextView)mydialog.findViewById(R.id.Name);
-        tt.setText(userWithRequest.name);
+        TextView Name=(TextView)mydialog.findViewById(R.id.Name);
+        TextView contactno=(TextView)mydialog.findViewById(R.id.Name);
+        Name.setText(userWithRequest.name);
+        contactno.setText(userWithRequest.name);
         Button accept=(Button)mydialog.findViewById(R.id.yes);
          Button reject=(Button)mydialog.findViewById(R.id.no);
         accept.setOnClickListener(new View.OnClickListener() {

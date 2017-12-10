@@ -25,6 +25,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -463,18 +464,48 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mydialog.setTitle("Help Session");
 
         mydialog.setContentView(R.layout.dialog);
-        RadioButton BreakDown = (RadioButton)mydialog. findViewById(R.id.carBreakdown);
-        RadioButton CarMain = (RadioButton)mydialog.findViewById(R.id.carMaint);
+        final RadioButton BreakDown = (RadioButton)mydialog. findViewById(R.id.carBreakdown);
+        final RadioButton CarMain = (RadioButton)mydialog.findViewById(R.id.carMaint);
         RadioGroup rg = (RadioGroup)mydialog.findViewById(R.id.radio1);
+        final CheckBox flatTyre=(CheckBox)mydialog.findViewById(R.id.chck1);
+        final CheckBox HeatIssue=(CheckBox)mydialog.findViewById(R.id.chck2);
+        final CheckBox BatteryDown=(CheckBox)mydialog.findViewById(R.id.chck3);
+        final CheckBox Other=(CheckBox)mydialog.findViewById(R.id.chck4);
+final Boolean c;
+        BreakDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flatTyre.setEnabled(true);
+                HeatIssue.setEnabled(true);
+                BatteryDown.setEnabled(true);
+                Other.setEnabled(true);
+            }
+        });
+        CarMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flatTyre.setEnabled(false);
+                HeatIssue.setEnabled(false);
+                BatteryDown.setEnabled(false);
+                Other.setEnabled(false);
+            }
+        });
+
         RadioButton selectedButton = (RadioButton) findViewById(rg.getCheckedRadioButtonId());
         final Button request=(Button)mydialog.findViewById(R.id.request);
        // Button Back=(Button)mydialog.findViewById(R.id.Back);
         request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),SessionId,marker.getTag().toString());
-                request.setEnabled(false);
-                request.setText("Requesting");
+                if(CarMain.isChecked()||(BreakDown.isChecked()
+                        &&(flatTyre.isChecked()||HeatIssue.isChecked()||BatteryDown.isChecked()||Other.isChecked()))) {
+                    mService.RequestMechanic(String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), SessionId, marker.getTag().toString());
+                    request.setEnabled(false);
+                    request.setText("Requesting");
+                }
+                else{
+                    Toast.makeText(mContext, "Please select the Mechanic type", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         mydialog.show();

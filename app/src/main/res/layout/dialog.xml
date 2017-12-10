@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:text="Heat up"
         android:id="@+id/chck2"/>
-        </LinearLayout>l
+        </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,11 +65,12 @@
         android:layout_height="wrap_content"
         android:text="Battery Issue"
         android:id="@+id/chck3"/>
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="others"
-        android:id="@+id/chck4"/>
+
+        <CheckBox
+            android:id="@+id/chck4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="others" />
     </LinearLayout>
 
     <RelativeLayout
