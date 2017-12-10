@@ -52,8 +52,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mContext=MapActivity.this;
         //get intent values from previous activity
         getInten = getIntent();
-        partnerLat= (double) getInten.getExtras().get("lat");
-        partnerLng= (double) getInten.getExtras().get("lng");
+        partnerLat= Double.parseDouble( getInten.getExtras().get("lat").toString());
+        partnerLng= Double.parseDouble (getInten.getExtras().get("lng").toString());
         done=false;
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
