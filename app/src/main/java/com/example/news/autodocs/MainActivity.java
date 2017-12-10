@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     Marker mCurrLocationMarker;
     double mlatitude,mlongitude;
     Boolean done;
-
+    Boolean requesr;
     LocalService mService;
     boolean mBound = false;
 
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String message = intent.getStringExtra("key");
             //TextView tv=(TextView)findViewById(R.id.mytextview);
             //tv.setText(message);
-            Boolean requesr=true;
+            requesr=true;
              Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             if(message.equalsIgnoreCase("success")&&requesr);
             {
