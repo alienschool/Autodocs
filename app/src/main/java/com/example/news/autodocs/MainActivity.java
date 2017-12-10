@@ -117,11 +117,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String message = intent.getStringExtra("key");
             //TextView tv=(TextView)findViewById(R.id.mytextview);
             //tv.setText(message);
-            requesr=true;
+            //requesr=true;
              Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-            if(message.equalsIgnoreCase("success")&&requesr);
+            if(message.equalsIgnoreCase("success"));
             {
-                requesr=false;
+                mydialog.dismiss();
+                //requesr=false;
                 AlertDialog alertDialog=new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("Request Accepted");
                 alertDialog.setMessage("Mechanic accepted the request, have a good day :)");
@@ -416,9 +417,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
+    Dialog mydialog;
     //final Marker marker
     private void dialogShow(final Marker marker) {
-        final Dialog mydialog=new Dialog(this);
+        mydialog=new Dialog(this);
 
         mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         mydialog.setTitle("Help Session");

@@ -34,7 +34,7 @@
         <service android:name=".LocalService" />
 
         <activity android:name=".MechanicActivity" />
-        <activity android:name=".MapActivity"></activity>
+        <activity android:name=".TheMapActivity"></activity>
     </application>
 
 </manifest>

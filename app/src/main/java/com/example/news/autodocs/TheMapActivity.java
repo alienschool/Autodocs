@@ -30,7 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
+public class TheMapActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,LocationListener {
 
     Context mContext;
@@ -49,9 +49,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        mContext=MapActivity.this;
+        mContext=TheMapActivity.this;
         //get intent values from previous activity
         getInten = getIntent();
+
         partnerLat= Double.parseDouble( getInten.getExtras().get("lat").toString());
         partnerLng= Double.parseDouble (getInten.getExtras().get("lng").toString());
         done=false;
@@ -171,7 +172,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(MapActivity.this,
+                                ActivityCompat.requestPermissions(TheMapActivity.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                         MY_PERMISSIONS_REQUEST_LOCATION );
                             }

@@ -91,7 +91,7 @@ public class MechanicActivity extends AppCompatActivity {
                 UserWithRequest c=response.body();
                 if(c.response.equalsIgnoreCase("success")){
                     Toast.makeText(MechanicActivity.this, "accepted ", Toast.LENGTH_LONG).show();
-                    Intent i=new Intent(MechanicActivity.this,MapActivity.class);
+                    Intent i=new Intent(MechanicActivity.this,TheMapActivity.class);
                     i.putExtra("lat",userWithRequest.userLat);
                     i.putExtra("lng",userWithRequest.userLng);
                     startActivity(i);
