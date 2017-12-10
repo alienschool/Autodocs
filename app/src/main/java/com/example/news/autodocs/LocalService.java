@@ -87,6 +87,12 @@ public class LocalService extends Service {
                     intent.putExtra("key", c.response);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
 
+                }else if(c.response.equalsIgnoreCase("rejected")){
+                    Intent intent = new Intent("intentKey");
+                    // You can also include some extra data.
+                    intent.putExtra("key", c.response);
+                    LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
+
                 }else{
                     Intent intent = new Intent("intentKey");
                     // You can also include some extra data.

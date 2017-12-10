@@ -119,13 +119,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             //tv.setText(message);
             //requesr=true;
              Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-            if(message.equalsIgnoreCase("success"));
+            if(message.equalsIgnoreCase("success"))
             {
                 mydialog.dismiss();
                 //requesr=false;
                 AlertDialog alertDialog=new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("Request Accepted");
                 alertDialog.setMessage("Mechanic accepted the request, have a good day :)");
+                alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Okay",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                            }
+                        });
+                alertDialog.show();
+            }else if(message.equalsIgnoreCase("rejected")){
+                mydialog.dismiss();
+                //requesr=false;
+                AlertDialog alertDialog=new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Request Rejected");
+                alertDialog.setMessage("Mechanic rejected your request. May be He/She is busy");
                 alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Okay",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
