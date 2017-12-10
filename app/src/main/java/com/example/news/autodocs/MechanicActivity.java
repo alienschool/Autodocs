@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,11 +30,32 @@ public class MechanicActivity extends AppCompatActivity {
     boolean mBound = false;
     //this is new
     UserWithRequest userWithRequest;
+    // Session Manager Class
+    SessionManager session;
+    String SessionId,SessionEmail,SessionPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mechanic);
+        session = new SessionManager(getApplicationContext());
+        /**
+         * Call this function whenever you want to check user login
+         * This will redirect user to LoginActivity is he is not
+         * logged in
+         * */
+        session.checkLogin();
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        SessionId = user.get(SessionManager.KEY_NAME);
+
+        // email
+        SessionEmail = user.get(SessionManager.KEY_EMAIL);
+
+        // password
+        SessionPassword = user.get(SessionManager.KEY_PASSWORD);
         userWithRequest=new UserWithRequest();
         //service
         LocalBroadcastManager.getInstance(this).registerReceiver(

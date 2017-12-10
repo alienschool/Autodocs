@@ -45,6 +45,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -56,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //this is a test change
     Context mContext;
+    // Session Manager Class
+    SessionManager session;
+    String SessionId,SessionEmail,SessionPassword;
+
     GoogleMap mGoogleMap;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -74,6 +79,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        session = new SessionManager(getApplicationContext());
+        /**
+         * Call this function whenever you want to check user login
+         * This will redirect user to LoginActivity is he is not
+         * logged in
+         * */
+        session.checkLogin();
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        SessionId = user.get(SessionManager.KEY_NAME);
+
+        // email
+        SessionEmail = user.get(SessionManager.KEY_EMAIL);
+
+        // password
+        SessionPassword = user.get(SessionManager.KEY_PASSWORD);
         mContext=MainActivity.this;
         done=false;
         mGoogleApiClient = new GoogleApiClient.Builder(this)
