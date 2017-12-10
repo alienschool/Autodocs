@@ -155,7 +155,7 @@ public class MechanicActivity extends AppCompatActivity {
             LocalService.LocalBinder binder = (LocalService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
-            mService.CheckForRequest("1");
+            mService.CheckForRequest(SessionId);
             //Toast.makeText(MechanicActivity.this, "service working", Toast.LENGTH_SHORT).show();
         }
 

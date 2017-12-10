@@ -472,7 +472,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString());
+               mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),SessionId,marker.getTag().toString());
                 request.setEnabled(false);
                 request.setText("Requesting");
             }
