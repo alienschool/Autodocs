@@ -116,13 +116,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             //add partner marker
             LatLng platLng = new LatLng(partnerLat,partnerLng);
             MarkerOptions pmarkerOptions = new MarkerOptions();
-            pmarkerOptions.position(latLng);
-            pmarkerOptions.title("Current Position");
-            pmarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+            pmarkerOptions.position(platLng);
+            pmarkerOptions.title("User waiting here");
+            pmarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             pmarkerOptions.draggable(true);
-            mGoogleMap.addMarker(markerOptions);
+            mGoogleMap.addMarker(pmarkerOptions);
             //move map camera
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(platLng,11));
         }
 
     }
