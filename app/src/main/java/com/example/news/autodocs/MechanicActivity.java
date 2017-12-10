@@ -26,7 +26,9 @@ public class MechanicActivity extends AppCompatActivity {
 
     LocalService mService;
     boolean mBound = false;
+    //this is new
     UserWithRequest userWithRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
