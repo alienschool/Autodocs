@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/TintBlack">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/l1"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Request Acceptance"
+            android:textSize="24dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:layout_marginTop="20dp"
+            android:textSize="24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:id="@+id/Name"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="20dp"
+            android:textSize="24dp"/>
+        </LinearLayout>
+    </LinearLayout>
+<RelativeLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/l1"
+
+        android:layout_alignParentStart="true">
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            android:layout_marginLeft="60dp"
+            android:id="@+id/yes"
+            android:background="@drawable/button_shape"
+            android:textColor="#f9f9f9"
+            />
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="No"
+            android:id="@+id/no"
+            android:background="@drawable/button_shape"
+            android:textColor="#f9f9f9"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/yes"
+            android:layout_marginLeft="40dp"/>
+
+    </RelativeLayout>
+</RelativeLayout>

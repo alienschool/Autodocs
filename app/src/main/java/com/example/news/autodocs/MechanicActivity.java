@@ -1,15 +1,21 @@
 package com.example.news.autodocs;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import retrofit2.Call;
@@ -20,6 +26,7 @@ public class MechanicActivity extends AppCompatActivity {
 
     LocalService mService;
     boolean mBound = false;
+    String name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +41,9 @@ public class MechanicActivity extends AppCompatActivity {
             // Get extra data included in the Intent
             String message = intent.getStringExtra("key");
             if(message.equalsIgnoreCase("success")){
-                String name = intent.getStringExtra("name");
-                Toast.makeText(context, name, Toast.LENGTH_LONG).show();
+                name = intent.getStringExtra("name");
+               // Toast.makeText(context, name, Toast.LENGTH_LONG).show();
+                dialogShow();
             }
             //UserWithRequest userWithRequest= (UserWithRequest) intent.getSerializableExtra("UserWithRequest");
             //TextView tv=(TextView)findViewById(R.id.mytextview);
@@ -43,7 +51,29 @@ public class MechanicActivity extends AppCompatActivity {
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
         }
     };
+    private void dialogShow() {
+        final Dialog mydialog=new Dialog(this);
 
+        mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        mydialog.setContentView(R.layout.mechanic_dialog);
+        TextView tt=(TextView)mydialog.findViewById(R.id.Name);
+        tt.setText(name);
+        Button accept=(Button)mydialog.findViewById(R.id.yes);
+         Button reject=(Button)mydialog.findViewById(R.id.no);
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        mydialog.show();
+    }
     public void AcceptRequest( final String requestId){
         APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
         //calling php file from here. php will return success
