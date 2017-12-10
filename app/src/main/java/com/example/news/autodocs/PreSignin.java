@@ -29,7 +29,7 @@ public class PreSignin extends AppCompatActivity {
         user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(PreSignin.this,MainActivity.class);
+                Intent i=new Intent(PreSignin.this,Signin.class);
                 startActivity(i);
                 finish();
             }

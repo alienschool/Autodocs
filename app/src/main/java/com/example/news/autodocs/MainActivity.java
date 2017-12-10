@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogShow();
+                //dialogShow();
                 if (mBound) {
                     // Call a method from the LocalService.
                     // However, if this call were something that might hang, then this request should
@@ -117,7 +117,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String message = intent.getStringExtra("key");
             //TextView tv=(TextView)findViewById(R.id.mytextview);
             //tv.setText(message);
+            Boolean requesr=true;
              Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            if(message.equalsIgnoreCase("success")&&requesr);
+            {
+                requesr=false;
+                AlertDialog alertDialog=new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Request Accepted");
+                alertDialog.setMessage("Mechanic accepted the request, have a good day :)");
+                alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Okay",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                            }
+                        });
+                alertDialog.show();
+            }
+
         }
     };
     @Override
@@ -381,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             // However, if this call were something that might hang, then this request should
             // occur in a separate thread to avoid slowing down the activity performance.
             //Toast.makeText(MainActivity.this, "bound", Toast.LENGTH_SHORT).show();
-    //        dialogShow(marker);
+            dialogShow(marker);
             //mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString());
             //String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString()
             //Toast.makeText(MainActivity.this, "number: " + num, Toast.LENGTH_SHORT).show();
@@ -400,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //final Marker marker
-    private void dialogShow() {
+    private void dialogShow(final Marker marker) {
         final Dialog mydialog=new Dialog(this);
 
         mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
@@ -411,12 +428,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         RadioButton CarMain = (RadioButton)mydialog.findViewById(R.id.carMaint);
         RadioGroup rg = (RadioGroup)mydialog.findViewById(R.id.radio1);
         RadioButton selectedButton = (RadioButton) findViewById(rg.getCheckedRadioButtonId());
-        Button request=(Button)mydialog.findViewById(R.id.request);
+        final Button request=(Button)mydialog.findViewById(R.id.request);
        // Button Back=(Button)mydialog.findViewById(R.id.Back);
         request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString());
+               mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString());
+                request.setEnabled(true);
+                request.setText("Requesting");
             }
         });
         mydialog.show();
