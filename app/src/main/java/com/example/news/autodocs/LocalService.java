@@ -158,10 +158,10 @@ public class LocalService extends Service {
                     intent.putExtra("id", c.id);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
                 }else {
-                    Intent intent = new Intent("RequestToMechanic");
+                    //Intent intent = new Intent("RequestToMechanic");
                     // You can also include some extra data.
-                    intent.putExtra("key", c.response+j);
-                    LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
+                    //intent.putExtra("key", c.response+j);
+                    //LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
                 }
             }
             @Override

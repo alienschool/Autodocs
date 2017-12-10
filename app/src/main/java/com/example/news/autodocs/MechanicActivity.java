@@ -39,13 +39,13 @@ public class MechanicActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
-            String message = intent.getStringExtra("key");
+            String message = intent.getExtras().get("key").toString();
             if(message.equalsIgnoreCase("success")){
-                userWithRequest.name = intent.getStringExtra("name");
-                userWithRequest.userLat = intent.getStringExtra("userLat");
-                userWithRequest.userLng = intent.getStringExtra("userLng");
-                userWithRequest.helpType = intent.getStringExtra("helpType");
-                userWithRequest.id = intent.getStringExtra("id");
+                userWithRequest.name = intent.getExtras().get("name").toString();
+                userWithRequest.userLat = intent.getExtras().get("userLat").toString();
+                userWithRequest.userLng = intent.getExtras().get("userLng").toString();
+                userWithRequest.helpType = intent.getExtras().get("helpType").toString();
+                userWithRequest.id = intent.getExtras().get("id").toString();
                // Toast.makeText(context, name, Toast.LENGTH_LONG).show();
                 dialogShow();
             }
