@@ -1,17 +1,19 @@
 package com.example.news.autodocs;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 public class PreSignin extends AppCompatActivity {
-
+Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,22 +45,28 @@ public class PreSignin extends AppCompatActivity {
                 String tittle="Notisfication";
                 String subject="Its me";
                 String body="No it is me";
+                Intent intent= new Intent(PreSignin.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-                Notification notify=new Notification.Builder
-                        (getApplicationContext()).setContentTitle(tittle).setContentText(body).
-                        setContentTitle(subject).setSmallIcon(R.drawable.common_google_signin_btn_icon_dark).build();
+                PendingIntent pendingIntent = PendingIntent.getActivity(PreSignin.this, 0 /* Request code */, intent,
+                        PendingIntent.FLAG_ONE_SHOT);
 
-                Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+                Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("AutoDocs")
+                        .setContentText("You have new request")
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
 
-                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-                PendingIntent intent = PendingIntent.getActivity(getApplicationContext(), 0,
-                        notificationIntent, 0);
-                notify.flags |= Notification.FLAG_AUTO_CANCEL;
-                notif.notify(1, notify);
+                notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
             }
+
         });
     }
 }

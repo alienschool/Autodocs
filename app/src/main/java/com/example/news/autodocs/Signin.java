@@ -2,9 +2,9 @@ package com.example.news.autodocs;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -146,10 +146,10 @@ public class Signin extends AppCompatActivity {
     }
     private void NextActivity(){
         if(userType.equalsIgnoreCase("user")){
-            Intent intent = new Intent(mContext,MainActivity.class);
-            mContext.startActivity(intent);
+            Intent intent1 = new Intent(mContext,MainActivity.class);
+            mContext.startActivity(intent1);
             finish();
-        }else{
+    }else{
             Intent intent = new Intent(mContext,MechanicActivity.class);
             mContext.startActivity(intent);
             finish();

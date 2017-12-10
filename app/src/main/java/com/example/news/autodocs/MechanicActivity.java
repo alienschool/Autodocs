@@ -1,6 +1,8 @@
 package com.example.news.autodocs;
 
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,8 +11,11 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,11 +38,12 @@ public class MechanicActivity extends AppCompatActivity {
     // Session Manager Class
     SessionManager session;
     String SessionId,SessionEmail,SessionPassword;
-
+Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mechanic);
+        mContext=MechanicActivity.this;
         session = new SessionManager(getApplicationContext());
         /**
          * Call this function whenever you want to check user login
@@ -73,6 +79,7 @@ public class MechanicActivity extends AppCompatActivity {
                 userWithRequest.helpType = intent.getExtras().get("helpType").toString();
                 userWithRequest.id = intent.getExtras().get("id").toString();
                // Toast.makeText(context, name, Toast.LENGTH_LONG).show();
+                Notification();
                 dialogShow();
             }
             //UserWithRequest userWithRequest= (UserWithRequest) intent.getSerializableExtra("UserWithRequest");
@@ -81,6 +88,31 @@ public class MechanicActivity extends AppCompatActivity {
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
         }
     };
+    private void Notification()
+    {
+
+        Intent intent= new Intent(MechanicActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(MechanicActivity.this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("AutoDocs")
+                .setContentText("You have new request")
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+    }
     private void dialogShow() {
         final Dialog mydialog=new Dialog(this);
 
