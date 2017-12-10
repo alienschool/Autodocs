@@ -180,17 +180,21 @@ Context mContext;
                 UserWithRequest c=response.body();
                 if(c.response.equalsIgnoreCase("success")){
                     Toast.makeText(MechanicActivity.this, "rejected ", Toast.LENGTH_LONG).show();
-                    mService.CheckForRequest(SessionId);
+
                 }
                 else {
                     Toast.makeText(MechanicActivity.this,"Server response: "+c.response, Toast.LENGTH_LONG).show();
                 }
+                startService();
             }
             @Override
             public void onFailure(Call<UserWithRequest> call, Throwable t) {
                 Toast.makeText(MechanicActivity.this, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+    private void startService(){
+        mService.CheckForRequest(SessionId);
     }
     @Override
     protected void onStart() {
