@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if (marker.getTag().equals(c.mechanicId)) {
                             marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                         }else{
-                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.defaultMarker().hashCode()));
+                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                         }
                     }
                 }
