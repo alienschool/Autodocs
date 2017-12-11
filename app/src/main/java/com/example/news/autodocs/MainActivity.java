@@ -69,7 +69,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     ArrayList<LatLng> latlngs;
     LatLng latLng;
     Location mLastLocation;
+    List<Marker> friendMarkers = new ArrayList<>();
     Marker mCurrLocationMarker;
+    MarkerOptions options;
+
     double mlatitude,mlongitude;
     Boolean done;
     Boolean requesr;
@@ -122,15 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View view) {
                 //dialogShow();
-                if (mBound) {
-                    // Call a method from the LocalService.
-                    // However, if this call were something that might hang, then this request should
-                    // occur in a separate thread to avoid slowing down the activity performance.
-                    //mService.RequestMechanic(String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), 1, marker.getTag().toString());
-                    //Toast.makeText(MainActivity.this, "number: " + num, Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(MainActivity.this, "error running service", Toast.LENGTH_SHORT).show();
-                }
+                FindNearestMechanic();
             }
         });
     }
@@ -176,6 +171,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
     };
+    public void FindNearestMechanic(){
+        APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
+        //calling php file from here. php will return success
+        Call<UserWithRequest> call=apiInterface.FindNearestMechanic(String.valueOf(mlatitude), String.valueOf(mlongitude));
+        call.enqueue(new Callback<UserWithRequest>() {
+            @Override
+            public void onResponse(Call<UserWithRequest> call, Response<UserWithRequest> response) {
+                UserWithRequest c=response.body();
+                if(c.response.equalsIgnoreCase("success")){
+                    Toast.makeText(MainActivity.this, "found "+c.mechanicId, Toast.LENGTH_LONG).show();
+                    for (Marker marker : friendMarkers) {
+                        if (marker.getTag().equals(c.mechanicId)) {
+                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                        }else{
+                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.defaultMarker().hashCode()));
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(MainActivity.this,"Server response: "+c.response, Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserWithRequest> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -234,13 +257,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     for (final Mechanic item:c) {
                         latLng = new LatLng(Double.parseDouble(item.lng),Double.parseDouble(item.lat));
                         //google map markers
-                        MarkerOptions options = new MarkerOptions();
+                        options = new MarkerOptions();
                         //get all markers and locations
                         builder.include(latLng);
                         options.position(latLng);
                         options.title(item.name);
                         options.snippet(item.phone);
-                        mGoogleMap.addMarker(options).setTag(item.id);
+                        Marker friendMarker=mGoogleMap.addMarker(options);
+                        friendMarker.setTag(item.id);
+                        friendMarkers.add(friendMarker);
+
 
                     }
                     // Set the camera to the greatest possible zoom level that includes the bounds

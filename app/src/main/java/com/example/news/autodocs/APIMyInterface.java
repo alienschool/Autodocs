@@ -26,6 +26,9 @@ public interface APIMyInterface {
     @FormUrlEncoded
     @POST("mechanics-nearby.php")
     Call<List<Mechanic>> MechanicsNearBy(@Field("lat") String lat, @Field("lng") String lng);
+    @FormUrlEncoded
+    @POST("request-nearest-mechanic.php")
+    Call<UserWithRequest> FindNearestMechanic( @Field("lat") String lat, @Field("lng") String lng);
 
     @FormUrlEncoded
     @POST("request-a-mechanic.php")
@@ -41,6 +44,7 @@ public interface APIMyInterface {
     @FormUrlEncoded
     @POST("accept-request.php")
     Call<UserWithRequest> AcceptRequest( @Field("requestId") String requestId);
+
     @FormUrlEncoded
     @POST("reject-request.php")
     Call<UserWithRequest> RejectRequest( @Field("requestId") String requestId);
