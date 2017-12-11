@@ -25,6 +25,16 @@
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/logo" />
 
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Login"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/login_email_editText"
                 android:layout_width="match_parent"
