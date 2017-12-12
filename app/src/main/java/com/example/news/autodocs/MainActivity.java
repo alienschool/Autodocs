@@ -140,7 +140,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
              Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             if(message.equalsIgnoreCase("success"))
             {
-                mydialog.dismiss();
+                if(mydialog.isShowing()){
+                    mydialog.dismiss();
+                }
+                final String requestId = intent.getExtras().get("requestId").toString();
                 //requesr=false;
                 AlertDialog alertDialog=new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("Request Accepted");
@@ -149,12 +152,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                UpdateMechanicLocation(requestId);
 
                             }
                         });
                 alertDialog.show();
             }else if(message.equalsIgnoreCase("rejected")){
-                mydialog.dismiss();
+                if(mydialog.isShowing()){
+                    mydialog.dismiss();
+                }
+
                 //requesr=false;
                 AlertDialog alertDialog=new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("Request Rejected");
@@ -171,6 +178,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
     };
+    public void UpdateMechanicLocation(final String requestId){
+        APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
+        //calling php file from here. php will return success
+        Call<UserWithRequest> call=apiInterface.getMechanicLocation(requestId);
+        call.enqueue(new Callback<UserWithRequest>() {
+            @Override
+            public void onResponse(Call<UserWithRequest> call, Response<UserWithRequest> response) {
+                UserWithRequest c=response.body();
+                if(c.response.equalsIgnoreCase("success")){
+                    Toast.makeText(MainActivity.this, "mechanic location updated ", Toast.LENGTH_LONG).show();
+                    for (Marker marker : friendMarkers) {
+                        if (marker.getTag().equals(c.mechanicId)) {
+                            marker.setPosition(new LatLng(Double.parseDouble(c.mechanicLat),Double.parseDouble(c.mechanicLng)));
+                            UpdateMechanicLocation(requestId);
+                        }else{
+                            //marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(MainActivity.this,"Server response: "+c.response, Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserWithRequest> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     public void FindNearestMechanic(){
         APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
         //calling php file from here. php will return success

@@ -36,6 +36,12 @@ public interface APIMyInterface {
                                     @Field("userId") String userId,
                                     @Field("mechanicId") String mechanicId,
                                     @Field("helpType") String helpType);
+    @FormUrlEncoded
+    @POST("share-mechanic-location.php")
+    Call<UserWithRequest> shareMechanicLocation(@Field("lat") String lat, @Field("lng") String lng, @Field("requestId") String requestId);
+    @FormUrlEncoded
+    @POST("get-mechanic-location.php")
+    Call<UserWithRequest> getMechanicLocation( @Field("requestId") String requestId);
 
     @FormUrlEncoded
     @POST("check-for-request.php")

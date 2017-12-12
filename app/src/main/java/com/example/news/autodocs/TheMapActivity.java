@@ -30,6 +30,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class TheMapActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,LocationListener {
 
@@ -40,6 +44,7 @@ public class TheMapActivity extends AppCompatActivity implements OnMapReadyCallb
     private LocationRequest mLocationRequest;
     LatLng latLng;
     double partnerLat,partnerLng;
+    String requestId;
     Location mLastLocation;
     Marker mCurrLocationMarker;
     double mlatitude,mlongitude;
@@ -55,6 +60,7 @@ public class TheMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
         partnerLat= Double.parseDouble( getInten.getExtras().get("lat").toString());
         partnerLng= Double.parseDouble (getInten.getExtras().get("lng").toString());
+        requestId= getInten.getExtras().get("requestId").toString();
         done=false;
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -72,6 +78,27 @@ public class TheMapActivity extends AppCompatActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
     }
 
+    public void shareMechanicLocation(){
+        APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
+        //calling php file from here. php will return success
+        Call<UserWithRequest> call=apiInterface.shareMechanicLocation(String.valueOf(mlatitude), String.valueOf(mlongitude),requestId);
+        call.enqueue(new Callback<UserWithRequest>() {
+            @Override
+            public void onResponse(Call<UserWithRequest> call, Response<UserWithRequest> response) {
+                UserWithRequest c=response.body();
+                if(c.response.equalsIgnoreCase("success")){
+                    Toast.makeText(mContext, "location shared ", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(mContext,"Server response: "+c.response, Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserWithRequest> call, Throwable t) {
+                Toast.makeText(mContext, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         mLocationRequest = new LocationRequest();
@@ -125,6 +152,7 @@ public class TheMapActivity extends AppCompatActivity implements OnMapReadyCallb
             //move map camera
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(platLng,11));
         }
+        shareMechanicLocation();
 
     }
 
