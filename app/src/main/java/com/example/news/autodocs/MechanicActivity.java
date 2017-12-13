@@ -157,6 +157,7 @@ Context mContext;
                     Intent i=new Intent(MechanicActivity.this,TheMapActivity.class);
                     i.putExtra("lat",userWithRequest.userLat);
                     i.putExtra("lng",userWithRequest.userLng);
+                    i.putExtra("requestId",userWithRequest.id);
                     startActivity(i);
                     finish();
                 }
