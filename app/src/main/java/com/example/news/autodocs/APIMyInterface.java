@@ -58,4 +58,12 @@ public interface APIMyInterface {
     @FormUrlEncoded
     @POST("testing-service.php")
     Call<String> testingPhp(@Field("test") String test);
+
+    @FormUrlEncoded
+    @POST("cancel-request.php")
+    Call<UserWithRequest> cancelRequest(@Field("requestId")String requestId);
+
+    @FormUrlEncoded
+    @POST("finish-request.php")
+    Call<UserWithRequest> finishRequest(@Field("requestId")String requestId);
 }

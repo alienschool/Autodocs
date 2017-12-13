@@ -73,7 +73,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     Marker mCurrLocationMarker;
     MarkerOptions options;
 
-    double mlatitude,mlongitude;
+    double mlatitude;
+    double mlongitude;
+    String mMechanicId;
     Boolean done;
     Boolean requesr;
     LocalService mService;
@@ -190,12 +192,61 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Toast.makeText(MainActivity.this, "mechanic location updated ", Toast.LENGTH_LONG).show();
                     for (Marker marker : friendMarkers) {
                         if (marker.getTag().equals(c.mechanicId)) {
+                            mMechanicId=c.mechanicId;
+                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                             marker.setPosition(new LatLng(Double.parseDouble(c.mechanicLat),Double.parseDouble(c.mechanicLng)));
                             UpdateMechanicLocation(requestId);
                         }else{
+                            marker.remove();
                             //marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                         }
                     }
+                }else if(c.response.equalsIgnoreCase("canceled")){
+                    Toast.makeText(MainActivity.this, "Canceled", Toast.LENGTH_LONG).show();
+
+                    AlertDialog cancelDialog=new AlertDialog.Builder(MainActivity.this).create();
+                    cancelDialog.setTitle("Request Canceled");
+                    cancelDialog.setMessage("Mechanic canceled your request");
+                    cancelDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Okay",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    unbindService(mConnection);
+                                    // Bind to LocalService
+                                    Intent intent = new Intent(mContext, LocalService.class);
+                                    bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+                                    for (Marker marker : friendMarkers) {
+                                        if (marker.getTag().equals(mMechanicId)) {
+                                            marker.remove();
+                                        }
+                                    }
+                                    AllMechanics();
+                                    dialog.dismiss();
+
+                                }
+                            });
+                    cancelDialog.show();
+                }else if(c.response.equalsIgnoreCase("finished")){
+                    Toast.makeText(MainActivity.this, "Finished", Toast.LENGTH_LONG).show();
+                    AlertDialog finishDialog=new AlertDialog.Builder(MainActivity.this).create();
+                    finishDialog.setTitle("Request Finished");
+                    finishDialog.setMessage("Job completed!");
+                    finishDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Okay",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    unbindService(mConnection);
+                                    // Bind to LocalService
+                                    Intent intent = new Intent(mContext, LocalService.class);
+                                    bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+                                    for (Marker marker : friendMarkers) {
+                                        if (marker.getTag().equals(mMechanicId)) {
+                                            marker.remove();
+                                        }
+                                    }
+                                    dialog.dismiss();
+
+                                }
+                            });
+                    finishDialog.show();
                 }
                 else {
                     Toast.makeText(MainActivity.this,"Server response: "+c.response, Toast.LENGTH_LONG).show();

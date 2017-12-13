@@ -14,6 +14,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -48,6 +51,8 @@ public class TheMapActivity extends AppCompatActivity implements OnMapReadyCallb
     Location mLastLocation;
     Marker mCurrLocationMarker;
     double mlatitude,mlongitude;
+    Button mFinishButton,mCancelButton;
+    TextView mTotal;
     Boolean done;
 
     @Override
@@ -61,6 +66,8 @@ public class TheMapActivity extends AppCompatActivity implements OnMapReadyCallb
         partnerLat= Double.parseDouble( getInten.getExtras().get("lat").toString());
         partnerLng= Double.parseDouble (getInten.getExtras().get("lng").toString());
         requestId= getInten.getExtras().get("requestId").toString();
+        mTotal=(TextView)findViewById(R.id.themap_total_textView);
+        mTotal.setText("PKR 0");
         done=false;
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -76,8 +83,80 @@ public class TheMapActivity extends AppCompatActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activityMap);
         mapFragment.getMapAsync(this);
+        mFinishButton=(Button)findViewById(R.id.themap_finish_button);
+        mFinishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishRequest();
+            }
+        });
+        mCancelButton=(Button)findViewById(R.id.themap_cancel_button);
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelRequest();
+            }
+        });
     }
+    protected void cancelRequest(){
+        APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
+        //calling php file from here. php will return success
+        Call<UserWithRequest> call=apiInterface.cancelRequest(requestId);
+        call.enqueue(new Callback<UserWithRequest>() {
+            @Override
+            public void onResponse(Call<UserWithRequest> call, Response<UserWithRequest> response) {
+                UserWithRequest c=response.body();
+                if(c.response.equalsIgnoreCase("success")){
+                    Toast.makeText(mContext, "canceled ", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(mContext,MechanicActivity.class);
+                    mContext.startActivity(intent);
+                    TheMapActivity.this.finish();
+                }
+                else {
+                    Toast.makeText(mContext,"Server response: "+c.response, Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserWithRequest> call, Throwable t) {
+                Toast.makeText(mContext, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    protected void finishRequest(){
+        APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
+        //calling php file from here. php will return success
+        Call<UserWithRequest> call=apiInterface.finishRequest(requestId);
+        call.enqueue(new Callback<UserWithRequest>() {
+            @Override
+            public void onResponse(Call<UserWithRequest> call, Response<UserWithRequest> response) {
+                UserWithRequest c=response.body();
+                if(c.response.equalsIgnoreCase("success")){
+                    Toast.makeText(mContext, "finished ", Toast.LENGTH_LONG).show();
+                    AlertDialog cancelDialog=new AlertDialog.Builder(TheMapActivity.this).create();
+                    cancelDialog.setTitle("Job Finished!");
+                    cancelDialog.setMessage("You have Successfully completed the job"+mTotal.getText().toString());
+                    cancelDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "Okay",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(mContext,MechanicActivity.class);
+                                    mContext.startActivity(intent);
+                                    TheMapActivity.this.finish();
+                                    dialog.dismiss();
 
+                                }
+                            });
+                    cancelDialog.show();
+                }
+                else {
+                    Toast.makeText(mContext,"Server response: "+c.response, Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserWithRequest> call, Throwable t) {
+                Toast.makeText(mContext, "Fail "+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     public void shareMechanicLocation(){
         APIMyInterface apiInterface= APIClient.getApiClient().create(APIMyInterface.class);
         //calling php file from here. php will return success
