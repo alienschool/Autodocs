@@ -98,6 +98,7 @@ public class LocalService extends Service {
                     Intent intent = new Intent("intentKey");
                     // You can also include some extra data.
                     intent.putExtra("key", c.response);
+                    intent.putExtra("requestId", c.id);
                     LocalBroadcastManager.getInstance(LocalService.this).sendBroadcast(intent);
                 }
             }

@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
-            String message = intent.getStringExtra("key");
+            String message = intent.getExtras().get("key").toString();
             //TextView tv=(TextView)findViewById(R.id.mytextview);
             //tv.setText(message);
             //requesr=true;
@@ -190,8 +190,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 UserWithRequest c=response.body();
                 if(c.response.equalsIgnoreCase("success")){
                     Toast.makeText(MainActivity.this, "mechanic location updated ", Toast.LENGTH_LONG).show();
+                    Marker mMarker = null;
                     for (Marker marker : friendMarkers) {
                         if (marker.getTag().equals(c.mechanicId)) {
+                            mMarker=marker;
                             mMechanicId=c.mechanicId;
                             marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                             marker.setPosition(new LatLng(Double.parseDouble(c.mechanicLat),Double.parseDouble(c.mechanicLng)));
@@ -201,6 +203,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             //marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                         }
                     }
+                    friendMarkers.clear();
+                    friendMarkers.add(mMarker);
                 }else if(c.response.equalsIgnoreCase("canceled")){
                     Toast.makeText(MainActivity.this, "Canceled", Toast.LENGTH_LONG).show();
 
@@ -544,30 +548,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        //Toast.makeText(MainActivity.this, "marker clicked", Toast.LENGTH_SHORT).show();
         if (mBound) {
             if(marker.getTag()!=null){
                 dialogShow(marker);
             }
-            // Call a method from the LocalService.
-            // However, if this call were something that might hang, then this request should
-            // occur in a separate thread to avoid slowing down the activity performance.
-            //Toast.makeText(MainActivity.this, "bound", Toast.LENGTH_SHORT).show();
-
-            //mService.RequestMechanic(String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString());
-            //String.valueOf(marker.getPosition().latitude),String.valueOf(marker.getPosition().longitude),"1",marker.getTag().toString()
-            //Toast.makeText(MainActivity.this, "number: " + num, Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(MainActivity.this, "error running service", Toast.LENGTH_SHORT).show();
         }
-        //String name= marker.getTitle();
-        //Toast.makeText(MainActivity.this, "marker clicked", Toast.LENGTH_SHORT).show();
-
-
-        //if ("sda".equalsIgnoreCase("My Spot"))
-        //{
-            //write your code here
-        //}
         return true;
     }
 
